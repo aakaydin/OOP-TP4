@@ -46,19 +46,24 @@ void printMapContents(unordered_map<string,visits> logData);
 
 void makeGraph(unordered_map<string,visits> logData, string filename);
 
+void printMessage(string msg);
+
 int main( int argc, char* argv[] )
 {
 
-    string filename = argv[argc-1];
+    if(argc > 2) {
+        string filename = argv[argc-1];
 
-    flagsData f = parseArgs(argc, argv);
+        flagsData f = parseArgs(argc, argv);
 
-    unordered_map<string,visits> logData = parseFile(filename, f);
+        unordered_map<string,visits> logData = parseFile(filename, f);
 
-    if(f.g) {
-        makeGraph(logData, f.graphFilename);
+        if(f.g) {
+            makeGraph(logData, f.graphFilename);
+        }
+    } else {
+        printMessage("You must provide a log file name as an argument!");
     }
-
 
 }
 
@@ -160,8 +165,12 @@ bool passFlagConditions(vector<string> parsedLine, flagsData f) {
 
     if(f.e)
         {
-            if( parsedLine[4].find(".jpg") != std::string::npos || parsedLine[4].find(".png") != std::string::npos || parsedLine[4].find(".gif") != std::string::npos ||
-            parsedLine[4].find(".ico") != std::string::npos || parsedLine[4].find(".css") != std::string::npos || parsedLine[4].find(".js") != std::string::npos  )
+            if( parsedLine[4].find(".jpg") != std::string::npos 
+            || parsedLine[4].find(".png") != std::string::npos 
+            || parsedLine[4].find(".gif") != std::string::npos 
+            || parsedLine[4].find(".ico") != std::string::npos 
+            || parsedLine[4].find(".css") != std::string::npos 
+            || parsedLine[4].find(".js") != std::string::npos  )
             {
                 return false;
             }
@@ -258,4 +267,11 @@ void makeGraph(unordered_map<string,visits> logData, string filename) {
     out << fileText;
     out.close();
 
+    printMessage("Dot-file " + filename + " generated");
+
+}
+
+inline void printMessage(string msg) {
+    string line(msg.length(), '-');
+    cout << "\n" << line << "\n" << msg << "\n" << line << "\n" << endl;
 }

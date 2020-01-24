@@ -1,0 +1,14 @@
+digraph {
+node0 [label="http://intranet-if.insa-lyon.fr/temps/4IF16.html"];
+node1 [label="http://intranet-if.insa-lyon.fr/temps/4IF15.html"];
+node2 [label="http://intranet-if.insa-lyon.fr/temps/4IF17.html"];
+node3 [label="http://intranet-if.insa-lyon.fr/temps/4IF18.html"];
+node4 [label="http://intranet-if.insa-lyon.fr/temps/4IF20.html"];
+node5 [label="http://intranet-if.insa-lyon.fr/temps/4IF19.html"];
+node6 [label="http://intranet-if.insa-lyon.fr/temps/4IF19.html"];
+node1 -> node0[label="1"];
+node0 -> node2[label="1"];
+node2 -> node3[label="1"];
+node5 -> node4[label="3"];
+node3 -> node6[label="1"];
+}
