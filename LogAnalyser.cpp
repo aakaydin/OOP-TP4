@@ -1,7 +1,6 @@
 #include <iostream>
 #include <unordered_map>
 #include <map>
-#include <vector>
 #include <fstream>
 
 using namespace std;
@@ -13,22 +12,7 @@ struct visits {
 
 };
 
-struct flagsData {
 
-    bool e;
-    bool g;
-    bool t;
-
-    int time;
-    string graphFilename;
-
-    flagsData() {
-        e = 0;
-        g = 0;
-        t = 0;
-        time = 0;
-    }
-};
 
 // Parses the arguments specified by the user at runtime
 flagsData parseArgs(int argc, char* argv[]);
@@ -115,7 +99,28 @@ unordered_map<string,visits> parseFile(string filename, flagsData f) {
         // Date
         getline(stream,input[3],'[');
         getline(stream,input[3],']');
-        // Request
+        flagsData parseArgs(int argc, char* argv[]) {
+            flagsData f;
+
+            for( int i=1; i<argc-1;i++ )
+            {
+                string s = argv[i];
+
+                if( s == "-e" ) f.e = 1;
+
+                if( s == "-t" )
+                {
+                    f.t = 1;
+                    f.time = stoi(argv[++i]);
+                }
+                if( s == "-g" )
+                {
+                    f.g = 1;
+                    f.graphFilename = argv[++i];
+                }
+            }
+            return f;
+        }// Request
         getline(stream,input[4],'"');
         getline(stream,input[4],'"');
         // Status code
@@ -171,11 +176,11 @@ bool passFlagConditions(vector<string> parsedLine, flagsData f) {
 
     if(f.e)
         {
-            if( parsedLine[4].find(".jpg") != std::string::npos 
-            || parsedLine[4].find(".png") != std::string::npos 
-            || parsedLine[4].find(".gif") != std::string::npos 
-            || parsedLine[4].find(".ico") != std::string::npos 
-            || parsedLine[4].find(".css") != std::string::npos 
+            if( parsedLine[4].find(".jpg") != std::string::npos
+            || parsedLine[4].find(".png") != std::string::npos
+            || parsedLine[4].find(".gif") != std::string::npos
+            || parsedLine[4].find(".ico") != std::string::npos
+            || parsedLine[4].find(".css") != std::string::npos
             || parsedLine[4].find(".js") != std::string::npos  )
             {
                 return false;

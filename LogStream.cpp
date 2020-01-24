@@ -31,12 +31,6 @@ using namespace std;
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-LogStream & LogStream::operator = ( const LogStream & unLogStream )
-// Algorithme :
-//
-{
-} //----- Fin de operator =
-
 
 //-------------------------------------------- Constructeurs - destructeur
 LogStream::LogStream ( const LogStream & unLogStream )
@@ -57,7 +51,6 @@ LogStream::LogStream (string filename)
     cout << "Appel au constructeur de <LogStream>" << endl;
 #endif
 
-    endOfFile = false;
     stream.open(filename);
 
 } //----- Fin de LogStream
@@ -92,13 +85,13 @@ vector<string> LogStream::getLogLine() {
         string newLine;
         getline(stream,newLine,'\n');
 
-        endOfFile = (stream.eof());
 
         return input;
 }
 
-bool LogStream::eof() {
-    return endOfFile;
+bool LogStream::eof()
+{
+    return stream.eof();
 }
 
 
@@ -112,7 +105,8 @@ LogStream::~LogStream ( )
 } //----- Fin de ~LogStream
 
 
+
+
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
-

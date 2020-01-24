@@ -1,49 +1,66 @@
 /*************************************************************************
-                           LogStream  -  description
+                           LogData  -  description
                              -------------------
     début                : $DATE$
     copyright            : (C) $YEAR$ par $AUTHOR$
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Interface de la classe <LogStream> (fichier LogStream.h) ----------------
-#if ! defined ( LOGSTREAM_H )
-#define LOGSTREAM_H
+//---------- Interface de la classe <LogData> (fichier LogData.h) ----------------
+#if ! defined ( LOGDATA_H )
+#define LOGDATA_H
+
+
+
+
+
+
 
 //--------------------------------------------------- Interfaces utilisées
-#include <fstream>
-#include <vector>
-#include <iostream>
 
-using namespace std;
+#include <unordered_map>
+#include <iostream>
+#include <map>
+#include <vector>
+#include "Flags.h"
+#include "LogStream.h"
+
 
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
+struct visits {
+
+    unordered_map<string,int>  visitors;
+    int hits;
+
+};
+
 
 //------------------------------------------------------------------------
-// Rôle de la classe <LogStream>
+// Rôle de la classe <LogData>
 //
 //
 //------------------------------------------------------------------------
 
-class LogStream
+class LogData
 {
 //----------------------------------------------------------------- PUBLIC
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    // type Méthode ( liste des paramètres );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-    LogStream(string filename);
-    vector<string> getLogLine();
-    bool eof();
+
+    // Parses and returns the data from a log file in the logData data structure
+    void parseFile(string filename, flagsData f);
+
+    void makeGraph( string filename);
+
+    // Statistics funciton
+    void statistics();
+
 
 //------------------------------------------------- Surcharge d'opérateurs
-    LogStream & operator = ( const LogStream & unLogStream );
+    LogData & operator = ( const LogData & unLogData );
     // Mode d'emploi :
     //
     // Contrat :
@@ -51,19 +68,19 @@ public:
 
 
 //-------------------------------------------- Constructeurs - destructeur
-    LogStream ( const LogStream & unLogStream );
+    LogData ( const LogData & unLogData );
     // Mode d'emploi (constructeur de copie) :
     //
     // Contrat :
     //
 
-    LogStream ( );
+    LogData ( string fileName, flagsData f);
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    virtual ~LogStream ( );
+    virtual ~LogData ( );
     // Mode d'emploi :
     //
     // Contrat :
@@ -74,11 +91,18 @@ public:
 protected:
 //----------------------------------------------------- Méthodes protégées
 
+// For a given line, checks whether or not this data should be added to logData, for a given set of flags
+bool passFlagConditions(vector<string> parsedLine, flagsData f);
+
+// Adds the data from a given parsed line (vector<string>) to a given logData
+void addLineToLogData( vector<string> input);
+
+
 //----------------------------------------------------- Attributs protégés
-    // bool endOfFile;
-    ifstream stream;
+    unordered_map<string,visits> log;
+
 };
 
-//-------------------------------- Autres définitions dépendantes de <LogStream>
+//-------------------------------- Autres définitions dépendantes de <LogData>
 
-#endif // LOGSTREAM_H
+#endif // LogData_H
