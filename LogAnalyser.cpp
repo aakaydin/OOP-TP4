@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unordered_map>
+#include <map>
 #include <vector>
 #include <fstream>
 
@@ -47,6 +48,8 @@ void printMapContents(unordered_map<string,visits> logData);
 void makeGraph(unordered_map<string,visits> logData, string filename);
 
 void printMessage(string msg);
+// Statistics funciton
+void statistics( unordered_map<string,visits> logData );
 
 int main( int argc, char* argv[] )
 {
@@ -61,10 +64,13 @@ int main( int argc, char* argv[] )
         if(f.g) {
             makeGraph(logData, f.graphFilename);
         }
+
+        statistics(logData);
     } else {
         printMessage("You must provide a log file name as an argument!");
     }
 
+    return 0;
 }
 
 flagsData parseArgs(int argc, char* argv[]) {
@@ -274,4 +280,29 @@ void makeGraph(unordered_map<string,visits> logData, string filename) {
 inline void printMessage(string msg) {
     string line(msg.length(), '-');
     cout << "\n" << line << "\n" << msg << "\n" << line << "\n" << endl;
+}
+
+void statistics( unordered_map<string,visits> logData )
+{
+    multimap<int,string> topTen;
+
+    for(auto& p: logData)
+    {
+        topTen.insert(make_pair(p.second.hits,p.first));
+
+        // cout << "lol" << endl;
+    }
+
+    multimap<int,string> :: reverse_iterator i;
+
+    cout << " multimap created" << endl;
+
+    int j = 0;
+    for( i=topTen.rbegin(); i != topTen.rend(); ++i )
+    {
+        cout << "/" <<  i->second;
+        cout<< " (" << i->first << " hits)" << endl;
+        j++;
+        if( j > 9 ) break;
+    }
 }
