@@ -53,11 +53,12 @@ int main( int argc, char* argv[] )
 
     flagsData f = parseArgs(argc, argv);
 
-    unordered_map<string,visits> logData = parseFile(filename, f);   
-    
+    unordered_map<string,visits> logData = parseFile(filename, f);
+
     if(f.g) {
         makeGraph(logData, f.graphFilename);
     }
+
 
 }
 
@@ -157,12 +158,21 @@ bool passFlagConditions(vector<string> parsedLine, flagsData f) {
 
     // Handle remaining flags here
 
+    if(f.e)
+        {
+            if( parsedLine[4].find(".jpg") != std::string::npos || parsedLine[4].find(".png") != std::string::npos || parsedLine[4].find(".gif") != std::string::npos ||
+            parsedLine[4].find(".ico") != std::string::npos || parsedLine[4].find(".css") != std::string::npos || parsedLine[4].find(".js") != std::string::npos  )
+            {
+                return false;
+            }
+        }
+
     return true;
 }
 
 unordered_map<string,visits> addLineToLogData(unordered_map<string,visits>& logData, vector<string> input) {
     string http = "http://intranet-if.insa-lyon.fr";
-        
+
     for( int i=0;i<input[4].length(); i++)
     {
         if( input[4][i] == ' ')
@@ -175,9 +185,9 @@ unordered_map<string,visits> addLineToLogData(unordered_map<string,visits>& logD
             }
         }
     }
-    
+
     string http2 = input[7];
-    
+
     // not found
     if( logData.find(http) == logData.end() )
     {
@@ -212,7 +222,7 @@ void printMapContents(unordered_map<string,visits> logData) {
 }
 
 void makeGraph(unordered_map<string,visits> logData, string filename) {
-    
+
     string nodes;
     string edges;
 
