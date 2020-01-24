@@ -97,6 +97,10 @@ vector<string> LogStream::getLogLine() {
         return input;
 }
 
+bool LogStream::eof() {
+    return endOfFile;
+}
+
 
 LogStream::~LogStream ( )
 // Algorithme :

@@ -40,6 +40,7 @@ public:
     //
     LogStream(string filename);
     vector<string> getLogLine();
+    bool eof();
 
 //------------------------------------------------- Surcharge d'opérateurs
     LogStream & operator = ( const LogStream & unLogStream );
